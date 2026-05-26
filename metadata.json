@@ -1,0 +1,6 @@
+{
+  "name": "Moveus",
+  "description": "Drive operations manager and logistics dashboard integrated with Google Sheets.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
