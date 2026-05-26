@@ -16,7 +16,8 @@ import {
   CheckCircle,
   Database,
   Lock,
-  Unlock
+  Unlock,
+  X
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Driver, Car as CarType, ShiftLog, MaintenanceLog, SpreadsheetInfo } from './types';
@@ -857,12 +858,48 @@ export default function App() {
         {/* Dynamic Display Area */}
         <main className="flex-1 bg-[#050505]">
           {syncError && (
-            <div id="top-sync-error" className="mb-6 bg-red-500/10 border border-red-500/20 text-red-400 p-4 rounded-none flex items-start space-x-3 text-xs font-sans">
-              <AlertTriangle className="h-4.5 w-4.5 shrink-0 mt-0.5 text-red-500" />
-              <div>
-                <span className="font-bold block">Google Sync Pipeline Interrupted</span>
-                <span className="mt-0.5 block opacity-85 text-[11px]">{syncError}</span>
+            <div id="top-sync-error" className="mb-6 bg-red-500/10 border border-red-500/20 text-red-405 p-4 rounded-none flex items-start justify-between gap-4 text-xs font-sans">
+              <div className="flex items-start space-x-3">
+                <AlertTriangle className="h-4.5 w-4.5 shrink-0 mt-0.5 text-red-500" />
+                <div>
+                  <span className="font-bold block text-red-400">Google Sync Pipeline Interrupted</span>
+                  <span className="mt-0.5 block opacity-85 text-[11px] text-red-300 leading-relaxed">{syncError}</span>
+                  
+                  <div className="flex flex-wrap items-center gap-2 mt-3 text-[10px]">
+                    <button
+                      id="btn-error-retry-sync"
+                      type="button"
+                      onClick={handleForceSync}
+                      className="cursor-pointer bg-red-500/20 hover:bg-red-500/30 text-red-200 font-bold px-3 py-1 uppercase tracking-wider transition-all border border-red-550/20"
+                    >
+                      Retry Connection
+                    </button>
+                    <button
+                      id="btn-error-go-offline"
+                      type="button"
+                      onClick={async () => {
+                        await firebaseLogout();
+                        setUser(null);
+                        setToken(null);
+                        setSpreadsheet(null);
+                        setSyncError(null);
+                      }}
+                      className="cursor-pointer bg-white/5 hover:bg-white/10 text-white/70 hover:text-white font-bold px-3 py-1 uppercase tracking-wider transition border border-white/10"
+                    >
+                      Disconnect & Work Offline
+                    </button>
+                  </div>
+                </div>
               </div>
+              <button
+                id="btn-error-dismiss"
+                type="button"
+                onClick={() => setSyncError(null)}
+                className="text-white/30 hover:text-white cursor-pointer transition p-0.5 shrink-0"
+                title="Dismiss warning"
+              >
+                <X className="h-4 w-4" />
+              </button>
             </div>
           )}
 
